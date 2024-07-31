@@ -6,7 +6,7 @@ interface ISearchLayoutProps {
 
 export function SearchLayout({ children }: ISearchLayoutProps) {
   return (
-    <div>
+    <div className="flex h-screen flex-col">
       <Header />
       {children}
     </div>
