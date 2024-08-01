@@ -1,9 +1,8 @@
 import { format } from "date-fns";
-import Image from "next/image";
 
 // icons
-import HearthGrayIcon from "../../public/icons/hearth-gray.svg";
 import { DisavowRepositoryButton } from "./DisavowRepositoryButton";
+import { FavoriteRepositoryButton } from "./FavoriteRepositoryButton";
 
 interface IRepositoryCardProps {
   title: string;
@@ -57,15 +56,7 @@ export function RepositoryCard({
             loadDataAfterUpdate={loadDataAfterUpdate}
           />
         ) : (
-          <button
-            type={"button"}
-            className="flex size-10 items-center justify-center rounded-full bg-whiteBackgroundMatte transition-all hover:brightness-90"
-          >
-            <Image
-              src={HearthGrayIcon}
-              alt={"Ícone de um coração na cor cinza"}
-            />
-          </button>
+          <FavoriteRepositoryButton owner={owner} repositoryName={title} />
         )}
       </div>
     </div>

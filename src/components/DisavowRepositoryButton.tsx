@@ -25,7 +25,7 @@ export function DisavowRepositoryButton({
       loadDataAfterUpdate && loadDataAfterUpdate();
       toast.success("Repositório desfavoritado com sucesso");
     } catch (error) {
-      toast.error("Erro ao favoritar repositório");
+      toast.error("Erro ao desfavoritar repositório");
     }
   }
 
