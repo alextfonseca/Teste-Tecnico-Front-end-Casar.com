@@ -11,8 +11,11 @@ const config: Config = {
         line: "#E3E6E9",
         greyNeutral: "#616161",
         greyDark: "#4E4E4E",
-        whiteBackgroundMatte: "#F3F3F5"
-      }
+        whiteBackgroundMatte: "#F3F3F5",
+      },
+      gridTemplateColumns: {
+        userPage: "448px 1fr",
+      },
     },
   },
   plugins: [],
