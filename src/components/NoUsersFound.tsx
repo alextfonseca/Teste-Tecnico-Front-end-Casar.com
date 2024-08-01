@@ -1,10 +1,14 @@
 import Image from "next/image";
 import NoUsersFoundImage from "../../public/images/no-users-found.svg";
 
-export function NoUsersFound() {
+interface INoUsersFoundProps {
+  userName: string | null;
+}
+
+export function NoUsersFound({ userName }: INoUsersFoundProps) {
   return (
     <div className="flex flex-col items-center">
-      <span className="text-xl font-semibold text-primary">“MHshdahsudl”</span>
+      <span className="text-xl font-semibold text-primary">“{userName}”</span>
       <h1 className="text-xl font-semibold text-greyNeutral">
         Nenhum usuário encontrado
       </h1>

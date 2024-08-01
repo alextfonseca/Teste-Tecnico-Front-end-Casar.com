@@ -11,11 +11,11 @@ import { Spinner } from "@/components/Spinner";
 import { SearchLayout } from "@/layout/searchLayout";
 
 // types
-import { IStarredRepositoryProps } from "@/@types/response";
+import { IRepositoryProps } from "@/@types/response";
 
 function Favorites() {
   const [starredRepositories, setStarredRepositories] = useState<
-    IStarredRepositoryProps[]
+    IRepositoryProps[]
   >([]);
 
   const [requestIsLoading, setRequestIsLoading] = useState(false);
