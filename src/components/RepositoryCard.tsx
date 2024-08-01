@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import Image from "next/image";
 
 // icons
@@ -19,6 +20,8 @@ export function RepositoryCard({
   updatedAt,
   isFavorite,
 }: IRepositoryCardProps) {
+  const updatedAtFormatted = format(new Date(updatedAt), "dd MMM yyyy");
+
   return (
     <div className="flex justify-between rounded border border-line p-4">
       <div>
@@ -37,7 +40,7 @@ export function RepositoryCard({
           </div>
 
           <span className="text-xs text-greyNeutral">
-            Updated on {updatedAt}
+            Updated on {updatedAtFormatted}
           </span>
         </div>
       </div>
