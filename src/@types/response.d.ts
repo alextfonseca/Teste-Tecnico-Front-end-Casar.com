@@ -4,6 +4,9 @@ export interface IRepositoryProps {
   description: string;
   language: string;
   updated_at: string;
+  owner: {
+    login: string;
+  };
 }
 
 export interface IUserDataProps {

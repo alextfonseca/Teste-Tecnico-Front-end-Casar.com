@@ -123,7 +123,8 @@ function UserComponent() {
                 }
                 principalLanguage={repository.language}
                 updatedAt={repository.updated_at}
-                isFavorite={true}
+                owner={repository.owner.login}
+                isFavorite={false}
               />
             ))}
           </div>

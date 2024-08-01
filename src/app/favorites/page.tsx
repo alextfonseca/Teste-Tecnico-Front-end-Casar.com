@@ -70,6 +70,8 @@ function Favorites() {
               principalLanguage={repository.language}
               updatedAt={repository.updated_at}
               isFavorite={true}
+              owner={repository.owner.login}
+              loadDataAfterUpdate={getStarredGithubRepository}
             />
           ))}
         </div>

@@ -2,8 +2,8 @@ import { format } from "date-fns";
 import Image from "next/image";
 
 // icons
-import HearthFillIcon from "../../public/icons/hearth-fill.svg";
 import HearthGrayIcon from "../../public/icons/hearth-gray.svg";
+import { DisavowRepositoryButton } from "./DisavowRepositoryButton";
 
 interface IRepositoryCardProps {
   title: string;
@@ -11,6 +11,8 @@ interface IRepositoryCardProps {
   principalLanguage: string;
   updatedAt: string;
   isFavorite: boolean;
+  owner: string;
+  loadDataAfterUpdate?: () => void;
 }
 
 export function RepositoryCard({
@@ -19,6 +21,8 @@ export function RepositoryCard({
   principalLanguage,
   updatedAt,
   isFavorite,
+  owner,
+  loadDataAfterUpdate,
 }: IRepositoryCardProps) {
   const updatedAtFormatted = format(new Date(updatedAt), "dd MMM yyyy");
 
@@ -47,15 +51,11 @@ export function RepositoryCard({
 
       <div>
         {isFavorite ? (
-          <button
-            type={"button"}
-            className="flex size-10 items-center justify-center rounded-full border border-primary transition-all hover:brightness-90"
-          >
-            <Image
-              src={HearthFillIcon}
-              alt={"Ícone de um coração preenchido na cor ver de água"}
-            />
-          </button>
+          <DisavowRepositoryButton
+            repositoryName={title}
+            owner={owner}
+            loadDataAfterUpdate={loadDataAfterUpdate}
+          />
         ) : (
           <button
             type={"button"}
