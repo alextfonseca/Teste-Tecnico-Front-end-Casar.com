@@ -13,7 +13,7 @@ export function Header() {
           <input
             type="text"
             placeholder="Buscar usuário"
-            className="flex-1 border-none outline-none"
+            className="flex-1 border-none text-sm text-greyDark outline-none"
           />
           <button className="transition-all hover:brightness-90">
             <Image src={SearchIcon} alt={"Ícone de pesquisa"} />
@@ -21,7 +21,7 @@ export function Header() {
         </form>
 
         <Link
-          href={""}
+          href={"/favorites"}
           className="flex items-center gap-2 bg-primary px-6 py-7 text-sm text-white transition-all hover:brightness-90"
         >
           <Image src={HearthIcon} alt={"Ícone de coração"} />
