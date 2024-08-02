@@ -23,8 +23,11 @@ function Favorites() {
 
   async function getStarredGithubRepository() {
     setRequestIsLoading(true);
+
     try {
-      const { data } = await github_api.get("/user/starred");
+      const { data } = await github_api.get(
+        `/user/starred?timestamp=${new Date().getTime()}`,
+      );
 
       setStarredRepositories(data);
     } catch (error) {
@@ -56,6 +59,10 @@ function Favorites() {
   return (
     <SearchLayout>
       <main className="bg mt-6 overflow-y-scroll px-5">
+        <button onClick={getStarredGithubRepository}>
+          Recarregar favoritos
+        </button>
+
         <h1 className="text-xl font-semibold text-greyNeutral lg:text-center lg:text-primary">
           Meus favoritos
         </h1>
