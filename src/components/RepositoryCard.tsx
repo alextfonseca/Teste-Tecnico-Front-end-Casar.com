@@ -11,7 +11,7 @@ interface IRepositoryCardProps {
   updatedAt: string;
   isFavorite: boolean;
   owner: string;
-  loadDataAfterUpdate?: () => void;
+  loadDataAfterUpdate: () => void;
 }
 
 export function RepositoryCard({
@@ -56,7 +56,11 @@ export function RepositoryCard({
             loadDataAfterUpdate={loadDataAfterUpdate}
           />
         ) : (
-          <FavoriteRepositoryButton owner={owner} repositoryName={title} />
+          <FavoriteRepositoryButton
+            owner={owner}
+            repositoryName={title}
+            loadDataAfterUpdate={loadDataAfterUpdate}
+          />
         )}
       </div>
     </div>

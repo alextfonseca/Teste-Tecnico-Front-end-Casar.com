@@ -38,13 +38,33 @@ function UserComponent() {
     setUserNotFound(false);
 
     try {
-      const [userDataResponse, userRepositoriesResponse] = await Promise.all([
+      const [
+        userDataResponse,
+        userRepositoriesResponse,
+        starredRepositoriesResponse,
+      ] = await Promise.all([
         github_api.get(`/users/${userName}`),
         github_api.get(`/users/${userName}/repos`),
+        github_api.get(`/user/starred`),
       ]);
 
       setUserData(userDataResponse.data);
-      setUserRepositories(userRepositoriesResponse.data);
+
+      const starredRepositories = starredRepositoriesResponse.data;
+
+      const repositoriesWithStarInfo = userRepositoriesResponse.data.map(
+        (repo: IRepositoryProps) => {
+          const isStarred = starredRepositories.some(
+            (starredRepo: IRepositoryProps) => starredRepo.id === repo.id,
+          );
+          return {
+            ...repo,
+            isStarred,
+          };
+        },
+      );
+
+      setUserRepositories(repositoriesWithStarInfo);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error?.response?.status === 404) {
@@ -91,7 +111,7 @@ function UserComponent() {
 
   return (
     <SearchLayout>
-      <main className="bg grid-cols-userPage mt-6 grid gap-12 overflow-hidden px-6">
+      <main className="bg mt-6 grid grid-cols-userPage gap-12 overflow-hidden px-6">
         <div className="flex h-fit flex-col items-center rounded border border-line px-6 py-10">
           <Image
             className="rounded-full"
@@ -124,7 +144,8 @@ function UserComponent() {
                 principalLanguage={repository.language}
                 updatedAt={repository.updated_at}
                 owner={repository.owner.login}
-                isFavorite={false}
+                isFavorite={repository.isStarred}
+                loadDataAfterUpdate={getUserData}
               />
             ))}
           </div>
@@ -136,7 +157,7 @@ function UserComponent() {
 
 function User() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<div>Carregando...</div>}>
       <UserComponent />
     </Suspense>
   );

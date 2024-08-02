@@ -10,7 +10,7 @@ import HearthFillIcon from "../../public/icons/hearth-fill.svg";
 interface IDisavowRepositoryButtonProps {
   owner: string;
   repositoryName: string;
-  loadDataAfterUpdate?: () => void;
+  loadDataAfterUpdate: () => void;
 }
 
 export function DisavowRepositoryButton({
@@ -22,8 +22,8 @@ export function DisavowRepositoryButton({
     try {
       await github_api.delete(`/user/starred/${owner}/${repositoryName}`);
 
-      loadDataAfterUpdate && loadDataAfterUpdate();
       toast.success("Repositório desfavoritado com sucesso");
+      loadDataAfterUpdate();
     } catch (error) {
       toast.error("Erro ao desfavoritar repositório");
     }

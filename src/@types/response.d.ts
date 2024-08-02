@@ -7,6 +7,7 @@ export interface IRepositoryProps {
   owner: {
     login: string;
   };
+  isStarred: boolean;
 }
 
 export interface IUserDataProps {
