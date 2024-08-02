@@ -1,6 +1,7 @@
 import { format } from "date-fns";
 
 // icons
+import { returnHexadecimalFromLanguages } from "@/utils/returnHexadecimalFromLanguages";
 import { DisavowRepositoryButton } from "./DisavowRepositoryButton";
 import { FavoriteRepositoryButton } from "./FavoriteRepositoryButton";
 
@@ -36,7 +37,13 @@ export function RepositoryCard({
 
         <div className="mt-4 flex items-center gap-6">
           <div className="flex items-center gap-2">
-            <div className="size-4 rounded-full bg-blue-500" />
+            <div
+              className={`size-4 rounded-full`}
+              style={{
+                backgroundColor:
+                  returnHexadecimalFromLanguages(principalLanguage),
+              }}
+            />
             <span className="text-xs text-greyNeutral">
               {principalLanguage}
             </span>
