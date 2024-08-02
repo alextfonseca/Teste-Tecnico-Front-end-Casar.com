@@ -1,22 +1,22 @@
 "use client";
 
 import { github_api } from "@/services/axios";
+import axios from "axios";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 // components
+import { NoUsersFound } from "@/components/NoUsersFound";
 import { RepositoryCard } from "@/components/RepositoryCard";
+import { Spinner } from "@/components/Spinner";
 
 // layout
 import { SearchLayout } from "@/layout/searchLayout";
 
 // types
 import { IRepositoryProps, IUserDataProps } from "@/@types/response";
-import { NoUsersFound } from "@/components/NoUsersFound";
-import { Spinner } from "@/components/Spinner";
-import axios from "axios";
 
 function UserComponent() {
   const searchParams = useSearchParams();
