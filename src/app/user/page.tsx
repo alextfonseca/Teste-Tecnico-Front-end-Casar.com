@@ -45,8 +45,10 @@ function UserComponent() {
         starredRepositoriesResponse,
       ] = await Promise.all([
         github_api.get(`/users/${userName}`),
-        github_api.get(`/users/${userName}/repos`),
-        github_api.get(`/user/starred`),
+        github_api.get(
+          `/users/${userName}/repos?timestamp=${new Date().getTime()}`,
+        ),
+        github_api.get(`/user/starred?timestamp=${new Date().getTime()}`),
       ]);
 
       setUserData(userDataResponse.data);
