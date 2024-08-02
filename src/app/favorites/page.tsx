@@ -40,8 +40,8 @@ function Favorites() {
   if (requestIsLoading) {
     return (
       <SearchLayout>
-        <main className="bg mt-6 overflow-y-scroll">
-          <h1 className="text-center text-xl font-semibold text-primary">
+        <main className="bg mt-6 overflow-y-scroll px-5">
+          <h1 className="text-xl font-semibold text-greyNeutral lg:text-center lg:text-primary">
             Meus favoritos
           </h1>
 
@@ -55,8 +55,8 @@ function Favorites() {
 
   return (
     <SearchLayout>
-      <main className="bg mt-6 overflow-y-scroll">
-        <h1 className="text-center text-xl font-semibold text-primary">
+      <main className="bg mt-6 overflow-y-scroll px-5">
+        <h1 className="text-xl font-semibold text-greyNeutral lg:text-center lg:text-primary">
           Meus favoritos
         </h1>
 

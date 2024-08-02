@@ -28,14 +28,14 @@ export function RepositoryCard({
 
   return (
     <div className="flex justify-between rounded border border-line p-4">
-      <div>
+      <div className="w-full">
         <h2 className="text-lg font-semibold text-greyNeutral">{title}</h2>
 
-        <p className="mt-[6px] max-w-[564px] text-sm text-greyNeutral">
+        <p className="mt-[6px] max-w-none text-sm text-greyNeutral lg:max-w-[80%]">
           {description}
         </p>
 
-        <div className="mt-4 flex items-center gap-6">
+        <div className="mt-4 flex flex-col gap-1 md:flex-row md:gap-6">
           <div className="flex items-center gap-2">
             <div
               className={`size-4 rounded-full`}
@@ -45,7 +45,7 @@ export function RepositoryCard({
               }}
             />
             <span className="text-xs text-greyNeutral">
-              {principalLanguage}
+              {principalLanguage || "Não informado"}
             </span>
           </div>
 

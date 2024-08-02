@@ -18,7 +18,7 @@ export function Search() {
 
   return (
     <form
-      className="flex w-[668px] items-center justify-between rounded border border-line px-4 py-2 transition-all hover:border-primary"
+      className="flex w-full items-center justify-between rounded border border-line px-4 py-2 transition-all hover:border-primary lg:w-[668px]"
       onSubmit={handleSearchUser}
     >
       <input
