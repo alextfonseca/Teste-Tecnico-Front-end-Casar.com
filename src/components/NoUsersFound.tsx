@@ -17,7 +17,7 @@ export function NoUsersFound({ userName }: INoUsersFoundProps) {
       </p>
 
       <Image
-        className="mt-8"
+        className="mt-8 hidden lg:block"
         src={NoUsersFoundImage}
         alt={"Ilustração de um ovni abduzindo um alien"}
       />

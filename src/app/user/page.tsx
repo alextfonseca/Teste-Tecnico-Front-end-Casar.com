@@ -17,6 +17,7 @@ import { SearchLayout } from "@/layout/searchLayout";
 
 // types
 import { IRepositoryProps, IUserDataProps } from "@/@types/response";
+import { Search } from "@/components/Search";
 
 function UserComponent() {
   const searchParams = useSearchParams();
@@ -92,7 +93,7 @@ function UserComponent() {
   if (requestIsLoading) {
     return (
       <SearchLayout>
-        <main className="mt-6 flex items-center justify-center px-6">
+        <main className="mt-6 flex items-center justify-center px-5">
           <Spinner />
         </main>
       </SearchLayout>
@@ -102,7 +103,10 @@ function UserComponent() {
   if (userNotFound) {
     return (
       <SearchLayout>
-        <main className="mt-6 flex items-center justify-center px-6">
+        <main className="mt-6 flex flex-col items-center justify-center gap-8 px-5 lg:gap-0">
+          <div className="w-full lg:hidden">
+            <Search />
+          </div>
           <NoUsersFound userName={userName} />
         </main>
       </SearchLayout>
@@ -111,46 +115,59 @@ function UserComponent() {
 
   return (
     <SearchLayout>
-      <main className="bg mt-6 grid grid-cols-userPage gap-12 overflow-hidden px-6">
-        <div className="flex h-fit flex-col items-center rounded border border-line px-6 py-10">
-          <Image
-            className="rounded-full"
-            src={userData.avatar_url}
-            alt={`Imagem do usuário ${userData.name}`}
-            width={200}
-            height={200}
-          />
-          <h2 className="mt-6 text-xl font-semibold text-greyNeutral">
-            {userData.name}
-          </h2>
-
-          <span className="text-sm text-greyDark">@{userData.login}</span>
-
-          <p className="mt-6 text-center text-sm text-greyNeutral">
-            {userData.bio}
-          </p>
+      <div className="mt-8 px-5 lg:mt-0 lg:overflow-y-scroll lg:px-0">
+        <div className="w-full lg:hidden">
+          <Search />
         </div>
-        <div className="mr-auto w-full max-w-[980px] overflow-y-scroll">
-          <h1 className="text-xl font-semibold text-primary">Repositórios</h1>
 
-          <div className="mt-6 flex flex-col gap-4 pb-10">
-            {userRepositories.map((repository) => (
-              <RepositoryCard
-                key={repository.id}
-                title={repository.name}
-                description={
-                  repository.description || "Esse repositório não tem descrição"
-                }
-                principalLanguage={repository.language}
-                updatedAt={repository.updated_at}
-                owner={repository.owner.login}
-                isFavorite={repository.isStarred}
-                loadDataAfterUpdate={getUserData}
+        <main className="bg mt-6 flex flex-col gap-4 lg:grid lg:grid-cols-userPage lg:gap-12 lg:px-5">
+          <div className="flex h-fit flex-col rounded-lg border border-line p-4 lg:items-center lg:rounded lg:px-6 lg:py-10">
+            <div className="flex items-center gap-2 border-b border-line pb-2 lg:flex-col lg:gap-6 lg:border-none lg:pb-0">
+              <Image
+                className="size-12 rounded-full lg:size-[200px]"
+                src={userData.avatar_url}
+                alt={`Imagem do usuário ${userData.name}`}
+                width={200}
+                height={200}
               />
-            ))}
+
+              <div className="flex flex-col lg:items-center">
+                <h2 className="text-xl font-semibold text-greyNeutral lg:mt-6">
+                  {userData.name}
+                </h2>
+
+                <span className="text-sm text-greyDark">@{userData.login}</span>
+              </div>
+            </div>
+
+            <p className="mt-2 text-sm text-greyNeutral lg:mt-6 lg:text-center">
+              {userData.bio}
+            </p>
           </div>
-        </div>
-      </main>
+
+          <div className="mr-auto w-full max-w-[980px]">
+            <h1 className="text-xl font-semibold text-primary">Repositórios</h1>
+
+            <div className="mt-6 flex flex-col gap-4 pb-10">
+              {userRepositories.map((repository) => (
+                <RepositoryCard
+                  key={repository.id}
+                  title={repository.name}
+                  description={
+                    repository.description ||
+                    "Esse repositório não tem descrição"
+                  }
+                  principalLanguage={repository.language}
+                  updatedAt={repository.updated_at}
+                  owner={repository.owner.login}
+                  isFavorite={repository.isStarred}
+                  loadDataAfterUpdate={getUserData}
+                />
+              ))}
+            </div>
+          </div>
+        </main>
+      </div>
     </SearchLayout>
   );
 }
