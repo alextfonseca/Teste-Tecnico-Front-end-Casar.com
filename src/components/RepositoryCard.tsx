@@ -35,7 +35,7 @@ export function RepositoryCard({
           {description}
         </p>
 
-        <div className="mt-4 flex items-center gap-6">
+        <div className="mt-4 flex flex-col gap-1 md:flex-row md:gap-6">
           <div className="flex items-center gap-2">
             <div
               className={`size-4 rounded-full`}
@@ -45,7 +45,7 @@ export function RepositoryCard({
               }}
             />
             <span className="text-xs text-greyNeutral">
-              {principalLanguage}
+              {principalLanguage || "Não informado"}
             </span>
           </div>
 
