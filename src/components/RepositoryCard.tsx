@@ -1,8 +1,9 @@
-import Image from "next/image";
+import { format } from "date-fns";
 
 // icons
-import HearthFillIcon from "../../public/icons/hearth-fill.svg";
-import HearthGrayIcon from "../../public/icons/hearth-gray.svg";
+import { returnHexadecimalFromLanguages } from "@/utils/returnHexadecimalFromLanguages";
+import { DisavowRepositoryButton } from "./DisavowRepositoryButton";
+import { FavoriteRepositoryButton } from "./FavoriteRepositoryButton";
 
 interface IRepositoryCardProps {
   title: string;
@@ -10,6 +11,8 @@ interface IRepositoryCardProps {
   principalLanguage: string;
   updatedAt: string;
   isFavorite: boolean;
+  owner: string;
+  loadDataAfterUpdate: () => void;
 }
 
 export function RepositoryCard({
@@ -18,7 +21,11 @@ export function RepositoryCard({
   principalLanguage,
   updatedAt,
   isFavorite,
+  owner,
+  loadDataAfterUpdate,
 }: IRepositoryCardProps) {
+  const updatedAtFormatted = format(new Date(updatedAt), "dd MMM yyyy");
+
   return (
     <div className="flex justify-between rounded border border-line p-4">
       <div>
@@ -30,39 +37,37 @@ export function RepositoryCard({
 
         <div className="mt-4 flex items-center gap-6">
           <div className="flex items-center gap-2">
-            <div className="size-4 rounded-full bg-blue-500" />
+            <div
+              className={`size-4 rounded-full`}
+              style={{
+                backgroundColor:
+                  returnHexadecimalFromLanguages(principalLanguage),
+              }}
+            />
             <span className="text-xs text-greyNeutral">
               {principalLanguage}
             </span>
           </div>
 
           <span className="text-xs text-greyNeutral">
-            Updated on {updatedAt}
+            Updated on {updatedAtFormatted}
           </span>
         </div>
       </div>
 
       <div>
         {isFavorite ? (
-          <button
-            type={"button"}
-            className="flex size-10 items-center justify-center rounded-full border border-primary transition-all hover:brightness-90"
-          >
-            <Image
-              src={HearthFillIcon}
-              alt={"Ícone de um coração preenchido na cor ver de água"}
-            />
-          </button>
+          <DisavowRepositoryButton
+            repositoryName={title}
+            owner={owner}
+            loadDataAfterUpdate={loadDataAfterUpdate}
+          />
         ) : (
-          <button
-            type={"button"}
-            className="flex size-10 items-center justify-center rounded-full bg-whiteBackgroundMatte transition-all hover:brightness-90"
-          >
-            <Image
-              src={HearthGrayIcon}
-              alt={"Ícone de um coração na cor cinza"}
-            />
-          </button>
+          <FavoriteRepositoryButton
+            owner={owner}
+            repositoryName={title}
+            loadDataAfterUpdate={loadDataAfterUpdate}
+          />
         )}
       </div>
     </div>
