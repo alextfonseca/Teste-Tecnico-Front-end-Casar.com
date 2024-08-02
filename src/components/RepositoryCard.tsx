@@ -28,10 +28,10 @@ export function RepositoryCard({
 
   return (
     <div className="flex justify-between rounded border border-line p-4">
-      <div>
+      <div className="w-full">
         <h2 className="text-lg font-semibold text-greyNeutral">{title}</h2>
 
-        <p className="mt-[6px] max-w-[564px] text-sm text-greyNeutral">
+        <p className="mt-[6px] max-w-none text-sm text-greyNeutral lg:max-w-[80%]">
           {description}
         </p>
 

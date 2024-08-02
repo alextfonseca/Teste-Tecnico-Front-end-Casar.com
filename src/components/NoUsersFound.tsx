@@ -12,7 +12,7 @@ export function NoUsersFound({ userName }: INoUsersFoundProps) {
       <h1 className="text-xl font-semibold text-greyNeutral">
         Nenhum usuário encontrado
       </h1>
-      <p className="text-greyNeutral">
+      <p className="text-center text-greyNeutral lg:text-left">
         Verifique se a escrita está correta ou tente novamente
       </p>
 

@@ -115,12 +115,12 @@ function UserComponent() {
 
   return (
     <SearchLayout>
-      <div className="mt-8 px-5 lg:mt-0 lg:overflow-y-scroll lg:px-0">
+      <div className="mt-8 overflow-hidden px-5 lg:mt-0 lg:px-0">
         <div className="w-full lg:hidden">
           <Search />
         </div>
 
-        <main className="bg mt-6 flex flex-col gap-4 lg:grid lg:grid-cols-userPage lg:gap-12 lg:px-5">
+        <main className="bg mt-6 flex h-full flex-col gap-4 overflow-y-scroll pb-10 lg:grid lg:grid-cols-userPage lg:gap-12 lg:px-5 lg:pb-0">
           <div className="flex h-fit flex-col rounded-lg border border-line p-4 lg:items-center lg:rounded lg:px-6 lg:py-10">
             <div className="flex items-center gap-2 border-b border-line pb-2 lg:flex-col lg:gap-6 lg:border-none lg:pb-0">
               <Image
@@ -140,7 +140,7 @@ function UserComponent() {
               </div>
             </div>
 
-            <p className="mt-2 text-sm text-greyNeutral lg:mt-6 lg:text-center">
+            <p className="mt-2 text-sm text-greyDark lg:mt-6 lg:text-center lg:text-greyNeutral">
               {userData.bio}
             </p>
           </div>
