@@ -15,7 +15,12 @@ export function Header() {
           href={"/favorites"}
           className="flex items-center gap-2 bg-primary px-6 py-7 text-sm text-white transition-all hover:brightness-90"
         >
-          <Image src={HearthIcon} alt={"Ícone de coração"} />
+          <Image
+            src={HearthIcon}
+            alt={"Ícone de coração"}
+            width={24}
+            height={20}
+          />
           Favoritos
         </Link>
       </div>

@@ -29,6 +29,8 @@ export default function Home() {
             alt={
               "Ilustração de uma mulher procurando usuários com uma lupa por uma lista"
             }
+            width={230}
+            height={257}
           />
         </div>
       </main>

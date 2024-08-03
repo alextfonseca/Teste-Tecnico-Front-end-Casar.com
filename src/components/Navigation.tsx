@@ -21,9 +21,19 @@ export function Navigation() {
         className={`flex h-[70px] items-center justify-center ${pathName !== "/favorites" ? "bg-primary" : "bg-white"} transition-all hover:brightness-90`}
       >
         {pathName === "/favorites" ? (
-          <Image src={UserFillGrayIcon} alt="User Icon" />
+          <Image
+            src={UserFillGrayIcon}
+            alt="User Icon"
+            width={24}
+            height={20}
+          />
         ) : (
-          <Image src={UserFillWhiteIcon} alt="User Icon" />
+          <Image
+            src={UserFillWhiteIcon}
+            alt="User Icon"
+            width={24}
+            height={20}
+          />
         )}
       </Link>
 
@@ -32,9 +42,19 @@ export function Navigation() {
         className={`flex h-[70px] items-center justify-center ${pathName === "/favorites" ? "bg-primary" : "bg-white"} transition-all hover:brightness-90`}
       >
         {pathName === "/favorites" ? (
-          <Image src={HearthFillWhiteIcon} alt="User Icon" />
+          <Image
+            src={HearthFillWhiteIcon}
+            alt="User Icon"
+            width={20}
+            height={24}
+          />
         ) : (
-          <Image src={HearthFillGrayIcon} alt="User Icon" />
+          <Image
+            src={HearthFillGrayIcon}
+            alt="User Icon"
+            width={20}
+            height={24}
+          />
         )}
       </Link>
     </div>
