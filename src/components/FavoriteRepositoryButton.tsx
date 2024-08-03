@@ -31,11 +31,17 @@ export function FavoriteRepositoryButton({
 
   return (
     <button
+      data-testid="favorite-button"
       className="flex size-10 items-center justify-center rounded-full bg-whiteBackgroundMatte transition-all hover:brightness-90"
       type={"button"}
       onClick={handleFavoriteRepository}
     >
-      <Image src={HearthGrayIcon} alt={"Ícone de um coração na cor cinza"} />
+      <Image
+        src={HearthGrayIcon}
+        alt={"Ícone de um coração na cor cinza"}
+        width={18}
+        height={16}
+      />
     </button>
   );
 }

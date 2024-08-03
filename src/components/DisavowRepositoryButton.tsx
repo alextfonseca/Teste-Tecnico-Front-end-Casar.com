@@ -31,6 +31,7 @@ export function DisavowRepositoryButton({
 
   return (
     <button
+      data-testid="disavow-button"
       className="flex size-10 items-center justify-center rounded-full border border-primary transition-all hover:brightness-90"
       type={"button"}
       onClick={handleDisavowRepository}
@@ -38,6 +39,8 @@ export function DisavowRepositoryButton({
       <Image
         src={HearthFillIcon}
         alt={"Ícone de um coração preenchido na cor ver de água"}
+        width={18}
+        height={16}
       />
     </button>
   );
