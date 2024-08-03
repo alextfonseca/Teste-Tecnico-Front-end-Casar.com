@@ -15,22 +15,23 @@ export function Navigation() {
   const pathName = usePathname();
 
   return (
-    <div className="grid grid-cols-2 items-center">
+    <div data-testid="navigation" className="grid grid-cols-2 items-center">
       <Link
+        data-testid="user-button"
         href="/"
         className={`flex h-[70px] items-center justify-center ${pathName !== "/favorites" ? "bg-primary" : "bg-white"} transition-all hover:brightness-90`}
       >
         {pathName === "/favorites" ? (
           <Image
             src={UserFillGrayIcon}
-            alt="User Icon"
+            alt="User Icon Gray"
             width={24}
             height={20}
           />
         ) : (
           <Image
             src={UserFillWhiteIcon}
-            alt="User Icon"
+            alt="User Icon White"
             width={24}
             height={20}
           />
@@ -38,6 +39,7 @@ export function Navigation() {
       </Link>
 
       <Link
+        data-testid="favorites-button"
         href="/favorites"
         className={`flex h-[70px] items-center justify-center ${pathName === "/favorites" ? "bg-primary" : "bg-white"} transition-all hover:brightness-90`}
       >
