@@ -20,6 +20,8 @@ export function NoUsersFound({ userName }: INoUsersFoundProps) {
         className="mt-8 hidden lg:block"
         src={NoUsersFoundImage}
         alt={"Ilustração de um ovni abduzindo um alien"}
+        width={399}
+        height={438}
       />
     </div>
   );
