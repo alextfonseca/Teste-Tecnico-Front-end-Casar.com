@@ -1,10 +1,8 @@
-// Navigation.test.tsx
 import { cleanup, render, screen } from "@testing-library/react";
 import { usePathname } from "next/navigation";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { Navigation } from "../Navigation";
 
-// Mock the usePathname hook
 vi.mock("next/navigation", () => ({
   usePathname: vi.fn(),
 }));

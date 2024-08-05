@@ -2,7 +2,6 @@ import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { Header } from "../Header";
 
-// Mock para o componente Image do next/image
 vi.mock("next/image", () => ({
   __esModule: true,
   default: ({ src, alt, width, height }: any) => (
@@ -10,7 +9,6 @@ vi.mock("next/image", () => ({
   ),
 }));
 
-// Mock para o componente Link do next/link
 vi.mock("next/link", () => ({
   __esModule: true,
   default: ({ href, children }: any) => <a href={href}>{children}</a>,

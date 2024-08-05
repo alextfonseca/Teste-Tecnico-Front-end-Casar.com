@@ -1,5 +1,5 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
-import { afterEach, describe, expect, test, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { Search } from "../Search";
 
 const push = vi.fn();
@@ -13,10 +13,10 @@ vi.mock("next/navigation", () => ({
   },
 }));
 
-describe("Test Search component", () => {
+describe("Search component", () => {
   afterEach(cleanup);
 
-  test("renders Search component and checks elements", () => {
+  it("renders Search component and checks elements", () => {
     render(<Search />);
 
     const form = screen.getByTestId("search-form");
@@ -28,7 +28,7 @@ describe("Test Search component", () => {
     expect(button).toBeInTheDocument();
   });
 
-  test("input value changes on user typing", () => {
+  it("input value changes on user typing", () => {
     render(<Search />);
 
     const input = screen.getByTestId("search-input");
@@ -38,7 +38,7 @@ describe("Test Search component", () => {
     expect(input).toHaveValue("testuser");
   });
 
-  test("Search component", () => {
+  it("Search component", () => {
     render(<Search />);
 
     const input = screen.getByTestId("search-input");

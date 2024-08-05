@@ -1,15 +1,14 @@
-// favoriteRepositoryButon.test.tsx
 import { github_api } from "@/services/axios";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { FavoriteRepositoryButton } from "../FavoriteRepositoryButton";
 
-// Mockar dependências
 vi.mock("@/services/axios", () => ({
   github_api: {
     put: vi.fn(),
   },
 }));
+
 vi.mock("react-toastify", () => ({
   toast: {
     success: vi.fn(),

@@ -2,7 +2,6 @@ import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { RepositoryCard } from "../RepositoryCard";
 
-// Mocking dependencies
 vi.mock("date-fns", () => ({
   format: vi.fn(() => "01 Jan 2023"),
 }));
@@ -37,7 +36,7 @@ vi.mock("./FavoriteRepositoryButton", () => ({
   ),
 }));
 
-describe("RepositoryCard", () => {
+describe("RepositoryCard Component", () => {
   afterEach(cleanup);
 
   const defaultProps = {
@@ -69,5 +68,11 @@ describe("RepositoryCard", () => {
     render(<RepositoryCard {...defaultProps} isFavorite={true} />);
 
     expect(screen.getByTestId("disavow-button")).toBeInTheDocument();
+  });
+
+  it("should render 'Não informado' when principalLanguage is not provided", () => {
+    render(<RepositoryCard {...defaultProps} principalLanguage="" />);
+
+    expect(screen.getByText("Não informado")).toBeInTheDocument();
   });
 });
