@@ -7,7 +7,7 @@ interface INoUsersFoundProps {
 
 export function NoUsersFound({ userName }: INoUsersFoundProps) {
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center" data-testid="no-users-found">
       <span className="text-xl font-semibold text-primary">“{userName}”</span>
       <h1 className="text-xl font-semibold text-greyNeutral">
         Nenhum usuário encontrado
@@ -20,6 +20,8 @@ export function NoUsersFound({ userName }: INoUsersFoundProps) {
         className="mt-8 hidden lg:block"
         src={NoUsersFoundImage}
         alt={"Ilustração de um ovni abduzindo um alien"}
+        width={399}
+        height={438}
       />
     </div>
   );
