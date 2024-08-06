@@ -1,5 +1,6 @@
 // __tests__/user.test.tsx
 
+import { IRepositoryProps } from "@/@types/response";
 import { github_api } from "@/services/axios";
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import { useSearchParams } from "next/navigation";
@@ -38,17 +39,10 @@ vi.mock("@/components/NoUsersFound", () => ({
 
 vi.mock("@/components/RepositoryCard", () => ({
   RepositoryCard: ({
-    title,
-    description,
+    repositoryData,
   }: {
-    title: string;
-    description: string;
-  }) => (
-    <div>
-      <h1 data-testid="repository-title">{title}</h1>
-      <p data-testid="repository-description">{description}</p>
-    </div>
-  ),
+    repositoryData: IRepositoryProps;
+  }) => <div data-testid="repository-title">{repositoryData.name}</div>,
 }));
 
 describe("UserComponent", () => {
@@ -69,6 +63,19 @@ describe("UserComponent", () => {
       get: () => "testuser",
     });
 
+    const repositories = [
+      {
+        id: 1,
+        name: "Repo 1",
+        description: "Description 1",
+        language: "JavaScript",
+        updated_at: "2022-01-01",
+        owner: { login: "owner1" },
+        isStarred: false,
+      },
+    ];
+    localStorage.setItem("starredRepositories", JSON.stringify(repositories));
+
     (github_api.get as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
       data: {
         avatar_url: "https://example.com/avatar.jpg",
@@ -78,22 +85,6 @@ describe("UserComponent", () => {
       },
     });
 
-    // repositories
-    (github_api.get as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
-      data: [
-        {
-          id: 1,
-          name: "Repo 1",
-          description: "Description 1",
-          language: "JavaScript",
-          updated_at: "2022-01-01",
-          owner: { login: "owner1" },
-          isStarred: false,
-        },
-      ],
-    });
-
-    // favoriteRepositories: [],
     (github_api.get as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
       data: [
         {
@@ -118,64 +109,6 @@ describe("UserComponent", () => {
       );
       expect(screen.getByTestId("repository-title")).toHaveTextContent(
         "Repo 1",
-      );
-    });
-  });
-
-  it("renders user data and repositories but with 'Esse repositório não tem descrição' on description", async () => {
-    (useSearchParams as ReturnType<typeof vi.fn>).mockReturnValue({
-      get: () => "testuser",
-    });
-
-    (github_api.get as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
-      data: {
-        avatar_url: "https://example.com/avatar.jpg",
-        name: "Test User",
-        login: "testuser",
-        bio: "This is a test user",
-      },
-    });
-
-    // repositories
-    (github_api.get as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
-      data: [
-        {
-          id: 1,
-          name: "Repo 1",
-          description: null,
-          language: "JavaScript",
-          updated_at: "2022-01-01",
-          owner: { login: "owner1" },
-          isStarred: false,
-        },
-      ],
-    });
-
-    // favoriteRepositories: [],
-    (github_api.get as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
-      data: [
-        {
-          id: 1,
-          name: "Repo 1",
-          description: null,
-          language: "JavaScript",
-          updated_at: "2022-01-01",
-          owner: { login: "owner1" },
-          isStarred: false,
-        },
-      ],
-    });
-
-    render(<User />);
-
-    await waitFor(() => {
-      expect(screen.getByTestId("user-name")).toHaveTextContent("Test User");
-      expect(screen.getByTestId("user-login")).toHaveTextContent("@testuser");
-      expect(screen.getByTestId("user-bio")).toHaveTextContent(
-        "This is a test user",
-      );
-      expect(screen.getByTestId("repository-description")).toHaveTextContent(
-        "Esse repositório não tem descrição",
       );
     });
   });

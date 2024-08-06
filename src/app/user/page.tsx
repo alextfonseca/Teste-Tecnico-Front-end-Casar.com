@@ -39,21 +39,22 @@ function UserComponent() {
     setUserNotFound(false);
 
     try {
-      const [
-        userDataResponse,
-        userRepositoriesResponse,
-        starredRepositoriesResponse,
-      ] = await Promise.all([
+      const starredRepositoriesResponseOnLocalStorage = localStorage.getItem(
+        "starredRepositories",
+      );
+
+      const [userDataResponse, userRepositoriesResponse] = await Promise.all([
         github_api.get(`/users/${userName}`),
         github_api.get(
           `/users/${userName}/repos?timestamp=${new Date().getTime()}`,
         ),
-        github_api.get(`/user/starred?timestamp=${new Date().getTime()}`),
       ]);
 
       setUserData(userDataResponse.data);
 
-      const starredRepositories = starredRepositoriesResponse.data;
+      const starredRepositories = starredRepositoriesResponseOnLocalStorage
+        ? JSON.parse(starredRepositoriesResponseOnLocalStorage)
+        : [];
 
       const repositoriesWithStarInfo = userRepositoriesResponse.data.map(
         (repo: IRepositoryProps) => {
@@ -167,15 +168,7 @@ function UserComponent() {
               {userRepositories.map((repository) => (
                 <RepositoryCard
                   key={repository.id}
-                  title={repository.name}
-                  description={
-                    repository.description ||
-                    "Esse repositório não tem descrição"
-                  }
-                  principalLanguage={repository.language}
-                  updatedAt={repository.updated_at}
-                  owner={repository.owner.login}
-                  isFavorite={repository.isStarred}
+                  repositoryData={repository}
                   loadDataAfterUpdate={getUserData}
                 />
               ))}

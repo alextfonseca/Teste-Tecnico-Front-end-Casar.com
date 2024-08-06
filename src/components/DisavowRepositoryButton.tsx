@@ -1,32 +1,43 @@
 "use client";
 
-import { github_api } from "@/services/axios";
 import Image from "next/image";
-import { toast } from "react-toastify";
 
 // icons
+import { IRepositoryProps } from "@/@types/response";
+import { toast } from "react-toastify";
 import HearthFillIcon from "../../public/icons/hearth-fill.svg";
 
 interface IDisavowRepositoryButtonProps {
-  owner: string;
-  repositoryName: string;
+  repositoryData: IRepositoryProps;
   loadDataAfterUpdate: () => void;
 }
 
 export function DisavowRepositoryButton({
-  owner,
-  repositoryName,
+  repositoryData,
   loadDataAfterUpdate,
 }: IDisavowRepositoryButtonProps) {
-  async function handleDisavowRepository() {
-    try {
-      await github_api.delete(`/user/starred/${owner}/${repositoryName}`);
+  async function handleRemoveRepositoryToLocalStorage() {
+    const starredRepositories = localStorage.getItem("starredRepositories");
 
-      toast.success("Repositório desfavoritado com sucesso");
+    if (!starredRepositories) {
       loadDataAfterUpdate();
-    } catch (error) {
-      toast.error("Erro ao desfavoritar repositório");
+      return;
     }
+
+    const repositories = JSON.parse(starredRepositories);
+
+    const newRepositories = repositories.filter(
+      (repository: IRepositoryProps) => repository.id !== repositoryData.id,
+    );
+
+    localStorage.setItem(
+      "starredRepositories",
+      JSON.stringify(newRepositories),
+    );
+
+    toast.success("Repositório removido dos favoritos");
+
+    loadDataAfterUpdate();
   }
 
   return (
@@ -34,7 +45,7 @@ export function DisavowRepositoryButton({
       data-testid="disavow-button"
       className="flex size-10 items-center justify-center rounded-full border border-primary transition-all hover:brightness-90"
       type={"button"}
-      onClick={handleDisavowRepository}
+      onClick={handleRemoveRepositoryToLocalStorage}
     >
       <Image
         src={HearthFillIcon}

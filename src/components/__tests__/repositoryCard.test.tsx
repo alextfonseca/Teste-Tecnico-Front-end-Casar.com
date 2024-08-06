@@ -1,77 +1,96 @@
+import { IRepositoryProps } from "@/@types/response";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { RepositoryCard } from "../RepositoryCard";
+
+vi.mock("../DisavowRepositoryButton", () => ({
+  DisavowRepositoryButton: ({
+    repositoryData,
+    loadDataAfterUpdate,
+  }: {
+    repositoryData: IRepositoryProps;
+    loadDataAfterUpdate: () => void;
+  }) => <button data-testid="disavow-button">Disavow</button>,
+}));
+
+vi.mock("../FavoriteRepositoryButton", () => ({
+  FavoriteRepositoryButton: ({
+    repositoryData,
+    loadDataAfterUpdate,
+  }: {
+    repositoryData: IRepositoryProps;
+    loadDataAfterUpdate: () => void;
+  }) => <button data-testid="favorite-button">Favorite</button>,
+}));
 
 vi.mock("date-fns", () => ({
   format: vi.fn(() => "01 Jan 2023"),
 }));
 
-vi.mock("@/utils/returnHexadecimalFromLanguages", () => ({
-  returnHexadecimalFromLanguages: vi.fn(() => "#000000"),
-}));
-
-vi.mock("./DisavowRepositoryButton", () => ({
-  DisavowRepositoryButton: ({
-    repositoryName,
-    owner,
-    loadDataAfterUpdate,
-  }: {
-    repositoryName: string;
-    owner: string;
-    loadDataAfterUpdate: () => void;
-  }) => <button onClick={loadDataAfterUpdate}>Disavow {repositoryName}</button>,
-}));
-
-vi.mock("./FavoriteRepositoryButton", () => ({
-  FavoriteRepositoryButton: ({
-    repositoryName,
-    owner,
-    loadDataAfterUpdate,
-  }: {
-    repositoryName: string;
-    owner: string;
-    loadDataAfterUpdate: () => void;
-  }) => (
-    <button onClick={loadDataAfterUpdate}>Favorite {repositoryName}</button>
-  ),
-}));
-
 describe("RepositoryCard Component", () => {
   afterEach(cleanup);
 
-  const defaultProps = {
-    title: "Test Repository",
+  const mockRepositoryData: IRepositoryProps = {
+    id: 1,
+    name: "Test Repository",
     description: "This is a test repository",
-    principalLanguage: "JavaScript",
-    updatedAt: "2023-01-01T00:00:00Z",
-    isFavorite: false,
-    owner: "test-owner",
-    loadDataAfterUpdate: vi.fn(),
+    language: "JavaScript",
+    updated_at: "2023-01-01T00:00:00Z",
+    isStarred: false,
+    owner: { login: "test-owner" },
   };
 
-  it("should render the repository card with given props", () => {
-    render(<RepositoryCard {...defaultProps} />);
+  const mockLoadDataAfterUpdate = vi.fn();
 
-    expect(screen.getByText("Test Repository")).toBeInTheDocument();
-    expect(screen.getByText("This is a test repository")).toBeInTheDocument();
+  it("renders repository details correctly", () => {
+    render(
+      <RepositoryCard
+        repositoryData={mockRepositoryData}
+        loadDataAfterUpdate={mockLoadDataAfterUpdate}
+      />,
+    );
+
+    expect(screen.getByTestId("repository-title")).toHaveTextContent(
+      "Test Repository",
+    );
+    expect(screen.getByTestId("repository-description")).toHaveTextContent(
+      "This is a test repository",
+    );
     expect(screen.getByText("JavaScript")).toBeInTheDocument();
     expect(screen.getByText("Updated on 01 Jan 2023")).toBeInTheDocument();
   });
 
-  it("should render the favorite button when isFavorite is false", () => {
-    render(<RepositoryCard {...defaultProps} />);
+  it("renders FavoriteRepositoryButton when isStarred is false", () => {
+    render(
+      <RepositoryCard
+        repositoryData={{ ...mockRepositoryData, isStarred: false }}
+        loadDataAfterUpdate={mockLoadDataAfterUpdate}
+      />,
+    );
 
     expect(screen.getByTestId("favorite-button")).toBeInTheDocument();
+    expect(screen.queryByTestId("disavow-button")).not.toBeInTheDocument();
   });
 
-  it("should render the disavow button when isFavorite is true", () => {
-    render(<RepositoryCard {...defaultProps} isFavorite={true} />);
+  it("renders DisavowRepositoryButton when isStarred is true", () => {
+    render(
+      <RepositoryCard
+        repositoryData={{ ...mockRepositoryData, isStarred: true }}
+        loadDataAfterUpdate={mockLoadDataAfterUpdate}
+      />,
+    );
 
     expect(screen.getByTestId("disavow-button")).toBeInTheDocument();
+    expect(screen.queryByTestId("favorite-button")).not.toBeInTheDocument();
   });
 
-  it("should render 'Não informado' when principalLanguage is not provided", () => {
-    render(<RepositoryCard {...defaultProps} principalLanguage="" />);
+  it('render "Não informado" when language is not provided', () => {
+    render(
+      <RepositoryCard
+        repositoryData={{ ...mockRepositoryData, language: "" }}
+        loadDataAfterUpdate={mockLoadDataAfterUpdate}
+      />,
+    );
 
     expect(screen.getByText("Não informado")).toBeInTheDocument();
   });

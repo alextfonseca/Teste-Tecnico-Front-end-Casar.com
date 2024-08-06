@@ -1,76 +1,97 @@
-import { github_api } from "@/services/axios";
+import { IRepositoryProps } from "@/@types/response";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { toast } from "react-toastify";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { DisavowRepositoryButton } from "../DisavowRepositoryButton";
 
-vi.mock("@/services/axios", () => ({
-  github_api: {
-    delete: vi.fn(),
-  },
-}));
-
+// Mock dependencies
 vi.mock("react-toastify", () => ({
   toast: {
     success: vi.fn(),
-    error: vi.fn(),
   },
+}));
+
+vi.mock("next/image", () => ({
+  __esModule: true,
+  default: ({
+    src,
+    alt,
+    width,
+    height,
+  }: {
+    src: string;
+    alt: string;
+    width: number;
+    height: number;
+  }) => <img src={src} alt={alt} width={width} height={height} />,
 }));
 
 describe("DisavowRepositoryButton Component", () => {
   afterEach(cleanup);
 
-  const owner = "test-owner";
-  const repositoryName = "test-repo";
-  const loadDataAfterUpdate = vi.fn();
+  const mockRepositoryData: IRepositoryProps = {
+    id: 1,
+    name: "Test Repository",
+    description: "This is a test repository",
+    language: "JavaScript",
+    updated_at: "2023-01-01T00:00:00Z",
+    isStarred: true,
+    owner: {
+      login: "test-owner",
+    },
+  };
 
-  it("should render correctly", () => {
-    render(
-      <DisavowRepositoryButton
-        owner={owner}
-        repositoryName={repositoryName}
-        loadDataAfterUpdate={loadDataAfterUpdate}
-      />,
-    );
+  const mockLoadDataAfterUpdate = vi.fn();
 
-    const buttonElement = screen.getByTestId("disavow-button");
-    expect(buttonElement).toBeInTheDocument();
+  beforeEach(() => {
+    localStorage.clear();
+    vi.clearAllMocks();
   });
 
-  it("should call handleDisavowRepository on button click", async () => {
+  it("renders correctly", () => {
     render(
       <DisavowRepositoryButton
-        owner={owner}
-        repositoryName={repositoryName}
-        loadDataAfterUpdate={loadDataAfterUpdate}
+        repositoryData={mockRepositoryData}
+        loadDataAfterUpdate={mockLoadDataAfterUpdate}
       />,
     );
 
-    const buttonElement = screen.getByTestId("disavow-button");
-    fireEvent.click(buttonElement);
-
-    expect(github_api.delete).toHaveBeenCalledWith(
-      `/user/starred/${owner}/${repositoryName}`,
-    );
+    expect(screen.getByTestId("disavow-button")).toBeInTheDocument();
   });
 
-  it("should show error toast on API failure", async () => {
-    (github_api.delete as ReturnType<typeof vi.fn>).mockRejectedValueOnce(
-      new Error("API Error"),
+  it("handles removal when there are no starred repositories", () => {
+    render(
+      <DisavowRepositoryButton
+        repositoryData={mockRepositoryData}
+        loadDataAfterUpdate={mockLoadDataAfterUpdate}
+      />,
+    );
+
+    fireEvent.click(screen.getByTestId("disavow-button"));
+
+    expect(mockLoadDataAfterUpdate).toHaveBeenCalled();
+    expect(localStorage.getItem("starredRepositories")).toBeNull();
+  });
+
+  it("handles removal when there are starred repositories", () => {
+    localStorage.setItem(
+      "starredRepositories",
+      JSON.stringify([mockRepositoryData]),
     );
 
     render(
       <DisavowRepositoryButton
-        owner={owner}
-        repositoryName={repositoryName}
-        loadDataAfterUpdate={loadDataAfterUpdate}
+        repositoryData={mockRepositoryData}
+        loadDataAfterUpdate={mockLoadDataAfterUpdate}
       />,
     );
 
-    const buttonElement = screen.getByTestId("disavow-button");
-    fireEvent.click(buttonElement);
+    fireEvent.click(screen.getByTestId("disavow-button"));
 
-    expect(github_api.delete).toHaveBeenCalledWith(
-      `/user/starred/${owner}/${repositoryName}`,
+    expect(mockLoadDataAfterUpdate).toHaveBeenCalled();
+    expect(localStorage.getItem("starredRepositories")).toEqual("[]");
+    expect(toast.success).toHaveBeenCalledWith(
+      "Repositório removido dos favoritos",
     );
   });
 });

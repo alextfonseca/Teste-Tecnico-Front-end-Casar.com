@@ -1,44 +1,20 @@
-import { github_api } from "@/services/axios";
+import { IRepositoryProps } from "@/@types/response";
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
-import { toast } from "react-toastify";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { ReactNode } from "react";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import Favorites from "../favorites/page";
 
-vi.mock("react-toastify", () => ({
-  toast: {
-    error: vi.fn(),
-  },
-}));
-
-vi.mock("next/navigation", () => ({
-  useRouter() {
-    return {
-      prefetch: () => null,
-    };
-  },
-}));
-
+// Mock components
 vi.mock("@/components/RepositoryCard", () => ({
   RepositoryCard: ({
-    title,
-    description,
+    repositoryData,
   }: {
-    title: string;
-    description: string;
-  }) => (
-    <div>
-      <h1>{title}</h1>
-      <p>{description}</p>
-    </div>
-  ),
-}));
-
-vi.mock("@/components/Spinner", () => ({
-  Spinner: () => <div data-testid="spinner">Loading...</div>,
+    repositoryData: IRepositoryProps;
+  }) => <div data-testid="repository-card">{repositoryData.name}</div>,
 }));
 
 vi.mock("@/layout/searchLayout", () => ({
-  SearchLayout: ({ children }: { children: React.ReactNode }) => (
+  SearchLayout: ({ children }: { children: ReactNode }) => (
     <div>{children}</div>
   ),
 }));
@@ -46,51 +22,27 @@ vi.mock("@/layout/searchLayout", () => ({
 describe("Favorites Page", () => {
   afterEach(cleanup);
 
-  it("should display loading spinner while fetching data", async () => {
-    vi.spyOn(github_api, "get").mockResolvedValueOnce({ data: [] });
-
-    render(<Favorites />);
-
-    expect(screen.getByTestId("spinner")).toBeInTheDocument();
-    await waitFor(() => expect(github_api.get).toHaveBeenCalled());
+  beforeEach(() => {
+    localStorage.clear();
   });
 
-  it("should display error message when fetching data fails", async () => {
-    vi.spyOn(github_api, "get").mockRejectedValueOnce(
-      new Error("Network Error"),
-    );
-
+  it("displays message when there are no starred repositories", async () => {
+    localStorage.setItem("starredRepositories", JSON.stringify([]));
     render(<Favorites />);
 
-    await waitFor(() =>
-      expect(toast.error).toHaveBeenCalledWith(
-        "Erro ao buscar repositórios favoritos",
-      ),
-    );
+    await waitFor(() => {
+      expect(
+        screen.getByText("Você ainda não tem repositórios favoritos"),
+      ).toBeInTheDocument();
+    });
   });
 
-  it("should display favorite repositories after fetching data", async () => {
-    const mockData = [
-      {
-        id: 1,
-        name: "Repo 1",
-        description: "Description 1",
-        language: "JavaScript",
-        updated_at: "2023-01-01T00:00:00Z",
-        owner: { login: "owner1" },
-      },
-      {
-        id: 2,
-        name: "Repo 2",
-        description: "Description 2",
-        language: "TypeScript",
-        updated_at: "2023-01-02T00:00:00Z",
-        owner: { login: "owner2" },
-      },
+  it("displays list of repositories when there are starred repositories", async () => {
+    const repositories = [
+      { id: 1, name: "Repo 1" },
+      { id: 2, name: "Repo 2" },
     ];
-
-    vi.spyOn(github_api, "get").mockResolvedValueOnce({ data: mockData });
-
+    localStorage.setItem("starredRepositories", JSON.stringify(repositories));
     render(<Favorites />);
 
     await waitFor(() => {
@@ -99,26 +51,19 @@ describe("Favorites Page", () => {
     });
   });
 
-  it("should display 'Esse repositório não tem descrição' when repository description is missing", async () => {
-    const mockData = [
-      {
-        id: 1,
-        name: "Repo 1",
-        description: null,
-        language: "JavaScript",
-        updated_at: "2023-01-01T00:00:00Z",
-        owner: { login: "owner1" },
-      },
-    ];
-
-    vi.spyOn(github_api, "get").mockResolvedValueOnce({ data: mockData });
+  it("returns early if starredRepositories is not in local storage", () => {
+    vi.spyOn(Storage.prototype, "getItem").mockImplementation((key) => {
+      if (key === "starredRepositories") {
+        return null;
+      }
+      return null;
+    });
 
     render(<Favorites />);
 
-    await waitFor(() => {
-      expect(
-        screen.getByText("Esse repositório não tem descrição"),
-      ).toBeInTheDocument();
-    });
+    // Check if the message about no favorite repositories is displayed
+    expect(
+      screen.getByText("Você ainda não tem repositórios favoritos"),
+    ).toBeInTheDocument();
   });
 });
