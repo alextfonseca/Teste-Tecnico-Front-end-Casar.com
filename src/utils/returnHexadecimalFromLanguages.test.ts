@@ -11,8 +11,16 @@ describe("returnHexadecimalFromLanguages", () => {
     expect(returnHexadecimalFromLanguages("TypeScript")).toBe("#2b7489");
   });
 
+  it("should return correct hexadecimal for Shell", () => {
+    expect(returnHexadecimalFromLanguages("Shell")).toBe("#89e051");
+  });
+
   it("should return correct hexadecimal for Python", () => {
     expect(returnHexadecimalFromLanguages("Python")).toBe("#3572A5");
+  });
+
+  it("should return correct hexadecimal for C#", () => {
+    expect(returnHexadecimalFromLanguages("C#")).toBe("#178600");
   });
 
   it("should return correct hexadecimal for unknown language", () => {
@@ -134,6 +142,10 @@ describe("returnHexadecimalFromLanguages", () => {
 
   it("should return correct hexadecimal for ClojureScript", () => {
     expect(returnHexadecimalFromLanguages("ClojureScript")).toBe("#db5855");
+  });
+
+  it("should return correct hexadecimal for CSS", () => {
+    expect(returnHexadecimalFromLanguages("CSS")).toBe("#563d7c");
   });
 
   it("should return correct hexadecimal for SCSS", () => {

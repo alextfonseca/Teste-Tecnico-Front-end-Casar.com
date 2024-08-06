@@ -125,24 +125,37 @@ function UserComponent() {
         <main className="bg mt-6 flex h-full flex-col gap-4 overflow-y-scroll pb-10 lg:grid lg:grid-cols-userPage lg:gap-12 lg:px-5 lg:pb-0">
           <div className="flex h-fit flex-col rounded-lg border border-line p-4 lg:items-center lg:rounded lg:px-6 lg:py-10">
             <div className="flex items-center gap-2 border-b border-line pb-2 lg:flex-col lg:gap-6 lg:border-none lg:pb-0">
-              <Image
-                className="size-12 rounded-full lg:size-[200px]"
-                src={userData.avatar_url}
-                alt={`Imagem do usuário ${userData.name}`}
-                width={200}
-                height={200}
-              />
+              {userData.avatar_url && (
+                <Image
+                  className="size-12 rounded-full lg:size-[200px]"
+                  src={userData.avatar_url}
+                  alt={`Imagem do usuário ${userData.name}`}
+                  width={200}
+                  height={200}
+                />
+              )}
 
               <div className="flex flex-col lg:items-center">
-                <h2 className="text-xl font-semibold text-greyNeutral lg:mt-6">
+                <h2
+                  className="text-xl font-semibold text-greyNeutral lg:mt-6"
+                  data-testid="user-name"
+                >
                   {userData.name}
                 </h2>
 
-                <span className="text-sm text-greyDark">@{userData.login}</span>
+                <span
+                  className="text-sm text-greyDark"
+                  data-testid="user-login"
+                >
+                  @{userData.login}
+                </span>
               </div>
             </div>
 
-            <p className="mt-2 text-sm text-greyDark lg:mt-6 lg:text-center lg:text-greyNeutral">
+            <p
+              className="mt-2 text-sm text-greyDark lg:mt-6 lg:text-center lg:text-greyNeutral"
+              data-testid="user-bio"
+            >
               {userData.bio}
             </p>
           </div>
