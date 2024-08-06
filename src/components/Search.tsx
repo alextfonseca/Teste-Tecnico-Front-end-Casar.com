@@ -12,7 +12,9 @@ export function Search() {
 
   const [userSearchName, setUserSearchName] = useState("");
 
-  function handleSearchUser() {
+  function handleSearchUser(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
     route.push(`/user?username=${userSearchName}`);
   }
 
