@@ -123,7 +123,7 @@ function UserComponent() {
           <Search />
         </div>
 
-        <main className="bg mt-6 flex h-full flex-col gap-4 overflow-y-scroll pb-10 lg:grid lg:grid-cols-userPage lg:gap-12 lg:px-5 lg:pb-0">
+        <main className="bg mx-auto mt-6 flex h-full max-w-[1440px] flex-col gap-4 overflow-y-scroll pb-10 lg:grid lg:grid-cols-userPage lg:gap-12 lg:px-5 lg:pb-0">
           <div className="flex h-fit flex-col rounded-lg border border-line p-4 lg:items-center lg:rounded lg:px-6 lg:py-10">
             <div className="flex items-center gap-2 border-b border-line pb-2 lg:flex-col lg:gap-6 lg:border-none lg:pb-0">
               {userData.avatar_url && (
