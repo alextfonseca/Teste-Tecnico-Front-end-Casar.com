@@ -3,8 +3,10 @@ import Image from "next/image";
 // layout
 import { SearchLayout } from "@/layout/searchLayout";
 
-// images
+// components
 import { Search } from "@/components/Search";
+
+// images
 import SearchUserImage from "../../public/images/search-user.svg";
 
 export default function Home() {

@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 // components
 import { NoUsersFound } from "@/components/NoUsersFound";
 import { RepositoryCard } from "@/components/RepositoryCard";
+import { Search } from "@/components/Search";
 import { Spinner } from "@/components/Spinner";
 
 // layout
@@ -17,7 +18,6 @@ import { SearchLayout } from "@/layout/searchLayout";
 
 // types
 import { IRepositoryProps, IUserDataProps } from "@/@types/response";
-import { Search } from "@/components/Search";
 
 function UserComponent() {
   const searchParams = useSearchParams();
@@ -34,7 +34,7 @@ function UserComponent() {
   const [requestIsLoading, setRequestIsLoading] = useState(false);
   const [userNotFound, setUserNotFound] = useState(false);
 
-  async function getUserData() {
+  async function fetchUserDataAndTheirRepositories() {
     setRequestIsLoading(true);
     setUserNotFound(false);
 
@@ -85,7 +85,7 @@ function UserComponent() {
 
   useEffect(() => {
     if (userName) {
-      getUserData();
+      fetchUserDataAndTheirRepositories();
     }
 
     if (!userName) {
@@ -169,7 +169,7 @@ function UserComponent() {
                 <RepositoryCard
                   key={repository.id}
                   repositoryData={repository}
-                  loadDataAfterUpdate={getUserData}
+                  loadDataAfterUpdate={fetchUserDataAndTheirRepositories}
                 />
               ))}
             </div>
