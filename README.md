@@ -2,7 +2,7 @@
 
 <img src="public/images/project.png" alt="exemplo imagem">
 
-> Plataforma para buscar dados de usuários do Github com dados do usuários e seus repositórios, além disso é possível adicionar ou remover repositórios de seus favoritos.
+> Plataforma para buscar dados de usuários do Github e seus repositórios, além disso é possível adicionar ou remover repositórios de seus favoritos.
 
 ## 💻 Pré-requisitos
 
