@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 // components
 import { NoUsersFound } from "@/components/NoUsersFound";
 import { RepositoryCard } from "@/components/RepositoryCard";
+import { Search } from "@/components/Search";
 import { Spinner } from "@/components/Spinner";
 
 // layout
@@ -17,7 +18,6 @@ import { SearchLayout } from "@/layout/searchLayout";
 
 // types
 import { IRepositoryProps, IUserDataProps } from "@/@types/response";
-import { Search } from "@/components/Search";
 
 function UserComponent() {
   const searchParams = useSearchParams();
@@ -34,26 +34,27 @@ function UserComponent() {
   const [requestIsLoading, setRequestIsLoading] = useState(false);
   const [userNotFound, setUserNotFound] = useState(false);
 
-  async function getUserData() {
+  async function fetchUserDataAndTheirRepositories() {
     setRequestIsLoading(true);
     setUserNotFound(false);
 
     try {
-      const [
-        userDataResponse,
-        userRepositoriesResponse,
-        starredRepositoriesResponse,
-      ] = await Promise.all([
+      const starredRepositoriesResponseOnLocalStorage = localStorage.getItem(
+        "starredRepositories",
+      );
+
+      const [userDataResponse, userRepositoriesResponse] = await Promise.all([
         github_api.get(`/users/${userName}`),
         github_api.get(
           `/users/${userName}/repos?timestamp=${new Date().getTime()}`,
         ),
-        github_api.get(`/user/starred?timestamp=${new Date().getTime()}`),
       ]);
 
       setUserData(userDataResponse.data);
 
-      const starredRepositories = starredRepositoriesResponse.data;
+      const starredRepositories = starredRepositoriesResponseOnLocalStorage
+        ? JSON.parse(starredRepositoriesResponseOnLocalStorage)
+        : [];
 
       const repositoriesWithStarInfo = userRepositoriesResponse.data.map(
         (repo: IRepositoryProps) => {
@@ -84,7 +85,7 @@ function UserComponent() {
 
   useEffect(() => {
     if (userName) {
-      getUserData();
+      fetchUserDataAndTheirRepositories();
     }
 
     if (!userName) {
@@ -122,7 +123,7 @@ function UserComponent() {
           <Search />
         </div>
 
-        <main className="bg mt-6 flex h-full flex-col gap-4 overflow-y-scroll pb-10 lg:grid lg:grid-cols-userPage lg:gap-12 lg:px-5 lg:pb-0">
+        <main className="bg mx-auto mt-6 flex h-full max-w-[1440px] flex-col gap-4 overflow-y-scroll pb-10 lg:grid lg:grid-cols-userPage lg:gap-12 lg:px-5 lg:pb-0">
           <div className="flex h-fit flex-col rounded-lg border border-line p-4 lg:items-center lg:rounded lg:px-6 lg:py-10">
             <div className="flex items-center gap-2 border-b border-line pb-2 lg:flex-col lg:gap-6 lg:border-none lg:pb-0">
               {userData.avatar_url && (
@@ -167,16 +168,8 @@ function UserComponent() {
               {userRepositories.map((repository) => (
                 <RepositoryCard
                   key={repository.id}
-                  title={repository.name}
-                  description={
-                    repository.description ||
-                    "Esse repositório não tem descrição"
-                  }
-                  principalLanguage={repository.language}
-                  updatedAt={repository.updated_at}
-                  owner={repository.owner.login}
-                  isFavorite={repository.isStarred}
-                  loadDataAfterUpdate={getUserData}
+                  repositoryData={repository}
+                  loadDataAfterUpdate={fetchUserDataAndTheirRepositories}
                 />
               ))}
             </div>

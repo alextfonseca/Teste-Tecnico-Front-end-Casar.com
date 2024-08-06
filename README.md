@@ -1,36 +1,89 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# SearchHub
 
-## Getting Started
+<img src="public/images/project.png" alt="exemplo imagem">
 
-First, run the development server:
+> Plataforma para buscar dados de usuários do Github com dados do usuários e seus repositórios, além disso é possível adicionar ou remover repositórios de seus favoritos.
+
+## 💻 Pré-requisitos
+
+Antes de começar, verifique se você atendeu aos seguintes requisitos:
+
+<!---Estes são apenas requisitos de exemplo. Adicionar, duplicar ou remover conforme necessário--->
+
+- Você instalou a versão mais recente do `< node / npm ou yarn >`
+- Você tem uma máquina `<Windows / Linux / Mac >`.
+
+## 🚀 Instalando o projeto <BlogNews> na sua maquina
+
+Para instalar o projeto, siga estas etapas:
+
+Adicione o seu token de acesso pessoal do seu GitHub em um arquivo .env (utilize o arquivo .env.exemple como exemplo)
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+NEXT_PUBLIC_GITHUB_ACCESS_TOKEN=
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Esse token é utilizado no service do axios para fazer as chamadas para a API
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```javascript
+import axios from "axios";
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+export const github_api = axios.create({
+  baseURL: "https://api.github.com",
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `token ${process.env.NEXT_PUBLIC_GITHUB_ACCESS_TOKEN}`,
+  },
+});
+```
 
-## Learn More
+Linux e macOS:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+git clone https://github.com/alextfonseca/Teste-Tecnico-Front-end-Casar.com
+$ cd Teste-Tecnico-Front-end-Casar.com
+$ yarn ou npm install
+$ yarn dev ou npm dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Windows:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```bash
+git clone https://github.com/alextfonseca/Teste-Tecnico-Front-end-Casar.com
+$ cd Teste-Tecnico-Front-end-Casar.com
+$ yarn ou npm install
+$ yarn dev ou npm dev
+```
 
-## Deploy on Vercel
+## 🧾 Projeto hospedado na vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# <a href="https://teste-tecnico-front-end-casar-com.vercel.app/">Acesse o projeto</a>
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## 🧑‍💻 Criador
+
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/alextfonseca">
+        <img src="https://github.com/alextfonseca.png" width="100px;" alt="Foto de Alex Teixeira da Fonseca no GitHub"/><br>
+        <sub>
+          <b>Alex Teixeira da Fonseca</b>
+        </sub>
+      </a>
+    </td>
+  </tr>
+</table>
+
+## 😄 Me siga nas redes sociais<br>
+
+<p align="left">
+
+  <a href="https://www.linkedin.com/in/alex-teixeira-da-fonseca-5a99931a2/" alt="Linkedin">
+  <img src="https://img.shields.io/badge/-Linkedin-0e76a8?style=flat-square&logo=Linkedin&logoColor=white&link=LINK-DO-SEU-LINKEDIN" /></a>
+
+  <a href="https://wa.me/+5511976184659?text=Olá%20Alex" alt="WhatsApp">
+  <img src="https://img.shields.io/badge/-WhatsApp-25d366?style=flat-square&labelColor=25d366&logo=whatsapp&logoColor=white&link=API-DO-SEU-WHATSAPP"/></a>
+
+  <a href="https://www.instagram.com/devalextf/?hl=pt-br" alt="Instagram">
+  <img src="https://img.shields.io/badge/-Instagram-DF0174?style=flat-square&labelColor=DF0174&logo=instagram&logoColor=white&link=LINK-DO-SEU-INSTAGRAM"/></a>
+</p>

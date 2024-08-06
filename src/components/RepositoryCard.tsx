@@ -1,30 +1,24 @@
 import { format } from "date-fns";
 
 // icons
+import { IRepositoryProps } from "@/@types/response";
 import { returnHexadecimalFromLanguages } from "@/utils/returnHexadecimalFromLanguages";
 import { DisavowRepositoryButton } from "./DisavowRepositoryButton";
 import { FavoriteRepositoryButton } from "./FavoriteRepositoryButton";
 
 interface IRepositoryCardProps {
-  title: string;
-  description: string;
-  principalLanguage: string;
-  updatedAt: string;
-  isFavorite: boolean;
-  owner: string;
+  repositoryData: IRepositoryProps;
   loadDataAfterUpdate: () => void;
 }
 
 export function RepositoryCard({
-  title,
-  description,
-  principalLanguage,
-  updatedAt,
-  isFavorite,
-  owner,
+  repositoryData,
   loadDataAfterUpdate,
 }: IRepositoryCardProps) {
-  const updatedAtFormatted = format(new Date(updatedAt), "dd MMM yyyy");
+  const updatedAtFormatted = format(
+    new Date(repositoryData.updated_at),
+    "dd MMM yyyy",
+  );
 
   return (
     <div className="flex justify-between rounded border border-line p-4">
@@ -33,14 +27,14 @@ export function RepositoryCard({
           className="text-lg font-semibold text-greyNeutral"
           data-testid="repository-title"
         >
-          {title}
+          {repositoryData.name}
         </h2>
 
         <p
           className="mt-[6px] max-w-none text-sm text-greyNeutral lg:max-w-[80%]"
           data-testid="repository-description"
         >
-          {description}
+          {repositoryData.description}
         </p>
 
         <div className="mt-4 flex flex-col gap-1 md:flex-row md:gap-6">
@@ -48,12 +42,13 @@ export function RepositoryCard({
             <div
               className={`size-4 rounded-full`}
               style={{
-                backgroundColor:
-                  returnHexadecimalFromLanguages(principalLanguage),
+                backgroundColor: returnHexadecimalFromLanguages(
+                  repositoryData.language,
+                ),
               }}
             />
             <span className="text-xs text-greyNeutral">
-              {principalLanguage || "Não informado"}
+              {repositoryData.language || "Não informado"}
             </span>
           </div>
 
@@ -64,16 +59,14 @@ export function RepositoryCard({
       </div>
 
       <div>
-        {isFavorite ? (
+        {repositoryData.isStarred ? (
           <DisavowRepositoryButton
-            repositoryName={title}
-            owner={owner}
+            repositoryData={repositoryData}
             loadDataAfterUpdate={loadDataAfterUpdate}
           />
         ) : (
           <FavoriteRepositoryButton
-            owner={owner}
-            repositoryName={title}
+            repositoryData={repositoryData}
             loadDataAfterUpdate={loadDataAfterUpdate}
           />
         )}
